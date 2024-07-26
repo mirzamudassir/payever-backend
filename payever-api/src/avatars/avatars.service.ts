@@ -10,7 +10,7 @@ import { HttpService } from '@nestjs/axios';
 
 @Injectable()
 export class AvatarService {
-  private imageDirectory = path.join(__dirname, '../../user-images'); // Directory to save images
+  public imageDirectory = path.join(__dirname, '../../user-images'); // Directory to save images
 
   constructor(
     @InjectModel('UserImage')
