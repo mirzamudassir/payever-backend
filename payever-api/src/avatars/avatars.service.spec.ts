@@ -3,7 +3,7 @@ import { HttpModule, HttpService } from '@nestjs/axios';
 import { Model } from 'mongoose';
 import { getModelToken } from '@nestjs/mongoose';
 import { AvatarService } from './avatars.service';
-import { UserImageDocument } from './user-image.schema';
+import { UserImageDocument } from './schema/user-image.schema';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as crypto from 'crypto';

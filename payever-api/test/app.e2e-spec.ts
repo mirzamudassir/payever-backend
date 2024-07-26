@@ -4,15 +4,16 @@ import { AppModule } from '../src/app.module';
 import { INestApplication } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 // import { getModelToken } from '@nestjs/mongoose';
-import { UserImageSchema } from '../src/avatars/user-image.schema';
+import { UserImageSchema } from '../src/avatars/schema/user-image.schema';
 import { HttpModule } from '@nestjs/axios';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as crypto from 'crypto';
+import { disconnect } from 'mongoose';
 
 describe('App E2E Tests', () => {
   let app: INestApplication;
-  const imageDirectory = path.join(__dirname, '../user-images'); // Directory for storing avatars
+  const imageDir = path.join(__dirname, '../user-images'); // Directory for storing avatars
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -32,6 +33,7 @@ describe('App E2E Tests', () => {
 
   afterAll(async () => {
     await app.close();
+    await disconnect();
   }, 300000);
 
   describe('POST /api/users', () => {
@@ -62,7 +64,7 @@ describe('App E2E Tests', () => {
 
   describe('GET /api/user/:userId/avatar', () => {
     it('should fetch and store a new avatar and return base64 representation', async () => {
-      const userId = 2;
+      const userId = 4;
 
       // Fetch the avatar image data
       await request(app.getHttpServer())
@@ -73,14 +75,14 @@ describe('App E2E Tests', () => {
 
   describe('GET /api/user/:userId/avatar', () => {
     it('should fetch and store a new avatar and return base64 representation', async () => {
-      const userId = 2; // Example userId, replace with a valid ID from your database
+      const userId = 4;
+      console.log('<<<<<<<<<<<<<<<<<<<<<<<', imageDir);
 
       // Fetch the avatar image data
       const getAvatarResponse = await request(app.getHttpServer())
         .get(`/api/user/${userId}/avatar`)
         .expect(200);
 
-      // Ensure the response is a string and contains base64 data
       const base64Image = getAvatarResponse.text; // Assume this is a string
 
       // expect(typeof base64Image).toBe('string');
@@ -89,7 +91,7 @@ describe('App E2E Tests', () => {
       // Extract base64 data from the response
       const base64Data = base64Image.replace(/^data:image\/png;base64,/, '');
       const fileName = `${userId}_${crypto.createHash('sha256').update(Buffer.from(base64Data, 'base64')).digest('hex')}.png`;
-      const filePath = path.join(imageDirectory, fileName);
+      const filePath = path.join(imageDir, fileName);
 
       // Write the image data to a file (for test setup purposes)
       fs.writeFileSync(filePath, Buffer.from(base64Data, 'base64'));

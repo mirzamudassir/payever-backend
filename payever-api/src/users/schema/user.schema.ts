@@ -1,6 +1,6 @@
 // src/users/user.schema.ts
 import { Schema } from 'mongoose';
-import { User } from './user.interface';
+import { User } from '../interface/user.interface';
 
 export const UserSchema = new Schema<User>({
   id: String,

@@ -3,7 +3,7 @@ import { HttpModule, HttpService } from '@nestjs/axios';
 import { Model } from 'mongoose';
 import { getModelToken } from '@nestjs/mongoose';
 import { UsersService } from './users.service';
-import { User } from './user.interface';
+import { User } from './interface/user.interface';
 import { AxiosResponse } from 'axios';
 import { of, throwError } from 'rxjs';
 import { HttpException } from '@nestjs/common';

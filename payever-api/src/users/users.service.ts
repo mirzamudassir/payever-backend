@@ -2,20 +2,24 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { User } from './user.interface';
+import { User } from './interface/user.interface';
 import axios from 'axios';
 import { Client, connect } from 'amqplib';
 import { firstValueFrom } from 'rxjs';
 import { HttpService } from '@nestjs/axios';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class UsersService {
   private rabbitClient: Client;
+  private readonly rabbitMQUrl: string;
 
   constructor(
     @InjectModel('User') private userModel: Model<User>,
     private readonly httpService: HttpService,
+    private configService: ConfigService,
   ) {
+    this.rabbitMQUrl = this.configService.get<string>('RABBIT_CLIENT');
     this.connectRabbitMQ();
   }
 
@@ -64,9 +68,7 @@ export class UsersService {
 
   private async connectRabbitMQ() {
     try {
-      this.rabbitClient = await connect(
-        `amqps://fruhnvir:m1T7F8-QLFTs7zGDmyi5xsii3MclfvEy@rattlesnake.rmq.cloudamqp.com/fruhnvir`,
-      );
+      this.rabbitClient = await connect(this.rabbitMQUrl);
       //   console.log('Connected to RabbitMQ');
     } catch (error) {
       console.error('Error connecting to RabbitMQ:', error);

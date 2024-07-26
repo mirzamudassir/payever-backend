@@ -24,7 +24,7 @@ npm run start
 npm run test
 ```
 
-## 6. API URL:
+## 6. API URL for Postman:
 ```
 [POST] http://localhost:3000/api/users
 [GET] http://localhost:3000/api/users/{userId}

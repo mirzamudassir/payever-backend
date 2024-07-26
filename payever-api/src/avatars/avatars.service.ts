@@ -5,12 +5,12 @@ import * as crypto from 'crypto';
 import * as fs from 'fs';
 import * as path from 'path';
 import { firstValueFrom } from 'rxjs';
-import { UserImageDocument } from './user-image.schema';
+import { UserImageDocument } from './schema/user-image.schema';
 import { HttpService } from '@nestjs/axios';
 
 @Injectable()
 export class AvatarService {
-  public imageDirectory = path.join(__dirname, '../../user-images'); // Directory to save images
+  private imageDirectory = path.join(__dirname, '../../../user-images'); // Directory to save images
 
   constructor(
     @InjectModel('UserImage')
