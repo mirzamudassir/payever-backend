@@ -67,7 +67,7 @@ export class UsersService {
       this.rabbitClient = await connect(
         `amqps://fruhnvir:m1T7F8-QLFTs7zGDmyi5xsii3MclfvEy@rattlesnake.rmq.cloudamqp.com/fruhnvir`,
       );
-      console.log('Connected to RabbitMQ');
+      //   console.log('Connected to RabbitMQ');
     } catch (error) {
       console.error('Error connecting to RabbitMQ:', error);
     }
